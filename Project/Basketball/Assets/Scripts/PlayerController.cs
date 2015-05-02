@@ -72,26 +72,14 @@ public class PlayerController : MonoBehaviour
 	{
 
 		float horizontalForce = CalculateHorizontalForce();
+
+		// permit movement in opposite direction of wall collision
 		if (isGrounded == true || (wallCollisionDirection == 0 || Mathf.Sign(wallCollisionDirection) == Mathf.Sign(horizontalForce)))
 		{
 			Vector3 velocity = rigidBody.velocity;
-			velocity.x = horizontalForce * CalculateInAirModifier();
+			velocity.x = horizontalForce;
 			rigidBody.velocity = velocity;
 		}
-
-	}
-
-	float CalculateInAirModifier()
-	{
-
-		float result = 1.0f;
-
-		if (isGrounded == false)
-		{
-			result = 0.5f;
-		}
-
-		return result;
 
 	}
 
