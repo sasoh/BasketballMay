@@ -5,6 +5,14 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
 
+	public enum PlayerIndex
+	{
+		PlayerNone,
+		Player1,
+		Player2
+	}
+
+	public PlayerIndex currentPlayer;
 	public float speedHorizontal;
 	public float speedHorizontalMaximum;
 	public float jumpPower;
