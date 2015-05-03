@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
 	{
 
 		axisHorizontal = CalculateHorizontalMovement();
-		jumpPressed = Input.GetButton(GetInputName("Jump"));
+		jumpPressed = Input.GetButtonDown(GetInputName("Jump"));
 
 		ProcessPickupInput();
 
