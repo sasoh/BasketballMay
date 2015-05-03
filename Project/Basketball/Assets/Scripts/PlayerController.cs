@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
 		else if (collisionTag == "Level Walls")
 		{
 			wallCollisionDirection = Mathf.Sign(transform.position.x - collision.gameObject.transform.position.x);
-		}
+		}		
 
 	}
 
