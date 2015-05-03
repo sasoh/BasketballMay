@@ -302,4 +302,12 @@ public class PlayerController : MonoBehaviour
 
 	}
 
+	public void ProcessDropping()
+	{
+
+		print ("Dropped player");
+		isGrounded = false;
+	
+	}
+
 }

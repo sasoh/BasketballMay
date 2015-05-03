@@ -81,6 +81,9 @@ public class CarriableObjectScript : MonoBehaviour
 	public void Drop()
 	{
 
+		// notify carried object that it was dropped (players getting dropped require more processing)
+		SendMessage("ProcessDropping", null, SendMessageOptions.DontRequireReceiver);
+		
 		carrier = null;
 		SetRigidBodyKinematic(false);
 
