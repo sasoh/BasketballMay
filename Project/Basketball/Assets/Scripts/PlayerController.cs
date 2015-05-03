@@ -51,20 +51,27 @@ public class PlayerController : MonoBehaviour
 		Rigidbody rb = GetComponent<Rigidbody>();
 
 		ApplyHorizontalMovement(rb);
-		ApplyJump(rb);
+		ApplyPlayerJump(rb);
 
 	}
 
-	void ApplyJump(Rigidbody rigidBody)
+	void ApplyPlayerJump(Rigidbody rigidBody)
 	{
 
 		if (isGrounded == true)
 		{
 			if (jumpPressed == true)
 			{
-				rigidBody.AddForce(new Vector3(0.0f, jumpPower, 0.0f), ForceMode.Impulse);
+				ApplyJump(rigidBody, jumpPower);
 			}
 		}
+
+	}
+
+	void ApplyJump(Rigidbody rigidBody, float force)
+	{
+
+		rigidBody.AddForce(new Vector3(0.0f, force, 0.0f), ForceMode.Impulse);
 
 	}
 
@@ -121,7 +128,7 @@ public class PlayerController : MonoBehaviour
 		else if (collisionTag == "Level Walls")
 		{
 			wallCollisionDirection = Mathf.Sign(transform.position.x - collision.gameObject.transform.position.x);
-		}		
+		}
 
 	}
 
@@ -136,6 +143,40 @@ public class PlayerController : MonoBehaviour
 		else if (collisionTag == "Level Walls")
 		{
 			wallCollisionDirection = 0;
+		}
+
+	}
+
+	void OnTriggerEnter(Collider other)
+	{
+
+		if (other.gameObject.tag == "Jump Pad")
+		{
+			ProcessJumpPadTrigger(other.gameObject);
+		}
+
+	}
+
+	void OnTriggerExit(Collider other)
+	{
+
+	}
+
+	void ProcessJumpPadTrigger(GameObject jumpPad)
+	{
+
+		Rigidbody rb = GetComponent<Rigidbody>();
+
+		JumpPadScript jpScript = jumpPad.GetComponent<JumpPadScript>();
+		if (jpScript != null)
+		{
+			// terminate any Y velocity
+			Vector3 velocity = rb.velocity;
+			velocity.y = 0.0f;
+			rb.velocity = velocity;
+
+			// add jump impulse
+			ApplyJump(rb, jpScript.jumpPadForce);
 		}
 
 	}
