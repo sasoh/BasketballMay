@@ -305,7 +305,7 @@ public class PlayerController : MonoBehaviour
 	public void ProcessDropping()
 	{
 
-		print ("Dropped player");
+		// disable jumping from dropped state
 		isGrounded = false;
 	
 	}
