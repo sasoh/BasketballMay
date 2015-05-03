@@ -21,7 +21,11 @@ public class HoopScript : MonoBehaviour
 
 		if (other.gameObject.tag == "Ball")
 		{
-			ProcessBallContact(other.gameObject);
+			// process only if ball comes from above
+			if (other.gameObject.transform.position.y > transform.position.y)
+			{
+				ProcessBallContact(other.gameObject);
+			}
 		}
 
 	}
@@ -32,14 +36,14 @@ public class HoopScript : MonoBehaviour
 		BallScript bScript = ball.GetComponent<BallScript>();
 		if (bScript != null)
 		{
-			//if (bScript.lastHoldingPlayer != PlayerController.PlayerIndex.PlayerNone)
-			//{
+			if (bScript.lastHoldingPlayer != PlayerController.PlayerIndex.PlayerNone)
+			{
 				// count point for player
 				print("Point for player " + bScript.lastHoldingPlayer);
 				bScript.SpawnNewBall();
 				bScript.DestroyBall();
-			//}
-		
+			}
+
 		}
 		else
 		{
