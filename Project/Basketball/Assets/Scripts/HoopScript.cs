@@ -36,24 +36,45 @@ public class HoopScript : MonoBehaviour
 			if (ball.gameObject.transform.position.y > transform.position.y)
 			{
 				// ball comes from above
-				if (coScript.lastHoldingPlayer != PlayerController.PlayerIndex.PlayerNone)
-				{
-					// count point for player
-					print("Point for " + coScript.lastHoldingPlayer);
-					coScript.Drop();
-					bScript.SpawnNewBall();
-					bScript.DestroyBall();
-				}
+				ProcessPossibleScoringBall(bScript, coScript);
 			}
 			else
 			{
-				// ball came from below the hoop, reset last owner
+				// ball came from below the hoop, just reset ball owner
 				coScript.ResetLastHolder();
 			}
 		}
 		else
 		{
 			Debug.LogError("Ball script/carriable script is null.");
+		}
+
+	}
+
+	void ProcessPossibleScoringBall(BallScript bScript, CarriableObjectScript coScript)
+	{
+
+		if (coScript.lastHoldingPlayer != PlayerController.PlayerIndex.PlayerNone)
+		{
+			AddPointToPlayer(coScript.lastHoldingPlayer);
+			coScript.Drop();
+			bScript.SpawnNewBall();
+			bScript.DestroyBall();
+		}
+
+	}
+
+	void AddPointToPlayer(PlayerController.PlayerIndex playerIndex)
+	{
+
+		GameManagerScript gManager = GameObject.FindObjectOfType<GameManagerScript>();
+		if (gManager != null)
+		{
+			gManager.AddPointToPlayer(playerIndex);
+		}
+		else
+		{
+			Debug.LogError("Failed getting game manager.");
 		}
 
 	}
