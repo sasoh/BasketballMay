@@ -7,6 +7,7 @@ public class CarriableObjectScript : MonoBehaviour
 	public Collider triggerCollider;
 	private GameObject carrier;
 	private Vector2 positionOffset;
+	public PlayerController.PlayerIndex lastHoldingPlayer { get; private set; }
 
 	// Use this for initialization
 	void Start()
@@ -42,12 +43,38 @@ public class CarriableObjectScript : MonoBehaviour
 
 	}
 
-	public void Pickup(GameObject other, Vector2 carryingPositionOffset)
+	public void ResetLastHolder()
 	{
 
-		carrier = other;
+		lastHoldingPlayer = PlayerController.PlayerIndex.PlayerNone;
+	
+	}
+
+	public void Pickup(PlayerController other, Vector2 carryingPositionOffset)
+	{
+
+		carrier = other.gameObject;
+		lastHoldingPlayer = other.currentPlayer;
 		positionOffset = carryingPositionOffset;
 		SetRigidBodyKinematic(true);
+
+	}
+
+	public void Throw(float force, bool rightDirection)
+	{
+
+		Drop();
+
+		Rigidbody rb = GetComponent<Rigidbody>();
+		
+		int multiplier = 1;
+		if (rightDirection == false)
+		{
+			multiplier = -1;
+		}
+
+		Vector3 forceVector = new Vector3(multiplier * force, force / 2, 0.0f);
+		rb.AddForce(forceVector, ForceMode.Impulse);
 
 	}
 

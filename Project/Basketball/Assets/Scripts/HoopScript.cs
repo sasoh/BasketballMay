@@ -21,11 +21,7 @@ public class HoopScript : MonoBehaviour
 
 		if (other.gameObject.tag == "Ball")
 		{
-			// process only if ball comes from above
-			if (other.gameObject.transform.position.y > transform.position.y)
-			{
-				ProcessBallContact(other.gameObject);
-			}
+			ProcessBallContact(other.gameObject);
 		}
 
 	}
@@ -34,20 +30,30 @@ public class HoopScript : MonoBehaviour
 	{
 
 		BallScript bScript = ball.GetComponent<BallScript>();
-		if (bScript != null)
+		CarriableObjectScript coScript = ball.GetComponent<CarriableObjectScript>();
+		if (bScript != null && coScript != null)
 		{
-			if (bScript.lastHoldingPlayer != PlayerController.PlayerIndex.PlayerNone)
+			if (ball.gameObject.transform.position.y > transform.position.y)
 			{
-				// count point for player
-				print("Point for player " + bScript.lastHoldingPlayer);
-				bScript.SpawnNewBall();
-				bScript.DestroyBall();
+				// ball comes from above
+				if (coScript.lastHoldingPlayer != PlayerController.PlayerIndex.PlayerNone)
+				{
+					// count point for player
+					print("Point for " + coScript.lastHoldingPlayer);
+					coScript.Drop();
+					bScript.SpawnNewBall();
+					bScript.DestroyBall();
+				}
 			}
-
+			else
+			{
+				// ball came from below the hoop, reset last owner
+				coScript.ResetLastHolder();
+			}
 		}
 		else
 		{
-			Debug.LogError("Ball script null.");
+			Debug.LogError("Ball script/carriable script is null.");
 		}
 
 	}

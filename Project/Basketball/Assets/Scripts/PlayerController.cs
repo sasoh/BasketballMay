@@ -15,8 +15,10 @@ public class PlayerController : MonoBehaviour
 	public float speedHorizontal;
 	public float speedHorizontalMaximum;
 	public float jumpPower;
+	public float throwPower;
 
 	private int axisHorizontal;
+	private bool isLookingRight;
 	private bool jumpPressed;
 	private bool isGrounded;
 	private float wallCollisionDirection;
@@ -30,37 +32,36 @@ public class PlayerController : MonoBehaviour
 		jumpPressed = false;
 		potentialCarryObject = null;
 		carriedObject = null;
+		isLookingRight = false;
 
 	}
 
 	void Update()
 	{
 
-		GetInput();
+		ProcessInput();
+		UpdateLookingRightStatus();
 
 	}
 
 	void FixedUpdate()
 	{
 
-		ApplyMovement();
+		UpdateMovement();
 
 	}
 
-	void GetInput()
+	void ProcessInput()
 	{
 
 		axisHorizontal = CalculateHorizontalMovement();
 		jumpPressed = Input.GetButton("P1Jump");
 
-		if (Input.GetButton("P1Pickup") == true)
-		{
-			PickupPotentialCargo();
-		}
+		ProcessPickupInput();
 
 	}
 
-	void ApplyMovement()
+	void UpdateMovement()
 	{
 
 		Rigidbody rb = GetComponent<Rigidbody>();
@@ -101,6 +102,17 @@ public class PlayerController : MonoBehaviour
 			Vector3 velocity = rigidBody.velocity;
 			velocity.x = horizontalForce;
 			rigidBody.velocity = velocity;
+		}
+
+	}
+
+	void UpdateLookingRightStatus()
+	{
+
+		isLookingRight = false;
+		if (axisHorizontal > 0.0f)
+		{
+			isLookingRight = true;
 		}
 
 	}
@@ -219,16 +231,52 @@ public class PlayerController : MonoBehaviour
 
 	}
 
+	void ProcessPickupInput()
+	{
+
+		if (carriedObject == null)
+		{
+			if (Input.GetButton("P1Pickup") == true)
+			{
+				PickupPotentialCargo();
+			}
+		}
+		else
+		{
+			// throwing on button down, otherwise picking up & throwing get into a loop
+			if (Input.GetButtonDown("P1Pickup") == true)
+			{
+				ThrowCargo();
+			}
+		}
+
+	}
+
 	void PickupPotentialCargo()
 	{
 
 		if (potentialCarryObject != null)
 		{
 			CarriableObjectScript coScript = potentialCarryObject.gameObject.GetComponent<CarriableObjectScript>();
-			coScript.Pickup(gameObject, new Vector2(0.0f, 1.25f));
-			potentialCarryObject = null;
+			coScript.Pickup(this, new Vector2(0.0f, 1.25f));
+			carriedObject = potentialCarryObject;
 		}
 
+		potentialCarryObject = null;
+
+	}
+
+	void ThrowCargo()
+	{
+
+		if (carriedObject != null)
+		{
+			CarriableObjectScript coScript = carriedObject.GetComponent<CarriableObjectScript>();
+			coScript.Throw(throwPower, isLookingRight);
+		}
+
+		carriedObject = null;
+		
 	}
 
 }
