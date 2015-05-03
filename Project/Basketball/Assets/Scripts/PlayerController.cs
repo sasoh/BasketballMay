@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 	private float wallCollisionDirection;
 	private GameObject potentialCarryObject = null;
 	private GameObject carriedObject = null;
+	private PlayerButtonScript buttonScript = null;
 
 	void Start()
 	{
@@ -33,6 +34,15 @@ public class PlayerController : MonoBehaviour
 		potentialCarryObject = null;
 		carriedObject = null;
 		isLookingRight = false;
+		buttonScript = GetComponent<PlayerButtonScript>();
+		if (buttonScript != null)
+		{
+			buttonScript.currentPlayer = currentPlayer;
+		}
+		else
+		{
+			Debug.LogError("Player button script not initialized correctly.");
+		}
 
 	}
 
@@ -55,7 +65,7 @@ public class PlayerController : MonoBehaviour
 	{
 
 		axisHorizontal = CalculateHorizontalMovement();
-		jumpPressed = Input.GetButton("P1Jump");
+		jumpPressed = Input.GetButton(GetInputName("Jump"));
 
 		ProcessPickupInput();
 
@@ -68,6 +78,20 @@ public class PlayerController : MonoBehaviour
 
 		ApplyHorizontalMovement(rb);
 		ApplyPlayerJump(rb);
+
+	}
+
+	string GetInputName(string targetInput)
+	{
+
+		string result = "";
+
+		if (buttonScript != null)
+		{
+			result = buttonScript.GetPlayerSpecificInput(targetInput);
+		}
+
+		return result;
 
 	}
 
@@ -121,8 +145,7 @@ public class PlayerController : MonoBehaviour
 	{
 
 		int result = 0;
-
-		float axisHorizontal = Input.GetAxis("Horizontal");
+		float axisHorizontal = Input.GetAxis(GetInputName("Horizontal"));
 		if (Mathf.Abs(axisHorizontal) > 0.0f)
 		{
 			result = (int)Mathf.Sign(axisHorizontal);
@@ -236,7 +259,7 @@ public class PlayerController : MonoBehaviour
 
 		if (carriedObject == null)
 		{
-			if (Input.GetButton("P1Pickup") == true)
+			if (Input.GetButton(GetInputName("Pickup")) == true)
 			{
 				PickupPotentialCargo();
 			}
@@ -244,7 +267,7 @@ public class PlayerController : MonoBehaviour
 		else
 		{
 			// throwing on button down, otherwise picking up & throwing get into a loop
-			if (Input.GetButtonDown("P1Pickup") == true)
+			if (Input.GetButtonDown(GetInputName("Pickup")) == true)
 			{
 				ThrowCargo();
 			}
@@ -276,7 +299,7 @@ public class PlayerController : MonoBehaviour
 		}
 
 		carriedObject = null;
-		
+
 	}
 
 }

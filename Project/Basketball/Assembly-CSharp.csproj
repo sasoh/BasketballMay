@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\GameManagerScript.cs" />
      <Compile Include="Assets\Scripts\HoopScript.cs" />
      <Compile Include="Assets\Scripts\JumpPadScript.cs" />
+     <Compile Include="Assets\Scripts\PlayerButtonScript.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\ScoreTextScript.cs" />
  <Reference Include="UnityEngine.UI">
