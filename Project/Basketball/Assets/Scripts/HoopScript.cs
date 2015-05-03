@@ -32,7 +32,14 @@ public class HoopScript : MonoBehaviour
 		BallScript bScript = ball.GetComponent<BallScript>();
 		if (bScript != null)
 		{
-			Debug.Log("Last ball holder " + bScript.lastHoldingPlayer);
+			//if (bScript.lastHoldingPlayer != PlayerController.PlayerIndex.PlayerNone)
+			//{
+				// count point for player
+				print("Point for player " + bScript.lastHoldingPlayer);
+				bScript.SpawnNewBall();
+				bScript.DestroyBall();
+			//}
+		
 		}
 		else
 		{

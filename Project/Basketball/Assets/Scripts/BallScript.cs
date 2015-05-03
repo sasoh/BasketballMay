@@ -3,8 +3,9 @@ using System.Collections;
 
 public class BallScript : MonoBehaviour
 {
-	
+
 	public PlayerController.PlayerIndex lastHoldingPlayer;
+	public GameObject ballSpawnPoint;
 
 	// Use this for initialization
 	void Start()
@@ -19,4 +20,20 @@ public class BallScript : MonoBehaviour
 	{
 
 	}
+
+	public void SpawnNewBall()
+	{
+
+		print (ballSpawnPoint);
+		Instantiate(gameObject, ballSpawnPoint.transform.position, transform.rotation);
+
+	}
+
+	public void DestroyBall()
+	{
+
+		Destroy(gameObject);
+
+	}
+
 }
