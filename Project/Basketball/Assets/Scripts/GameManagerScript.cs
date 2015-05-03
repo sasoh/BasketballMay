@@ -22,6 +22,18 @@ public class GameManagerScript : MonoBehaviour
 	void Update()
 	{
 
+		CheckForGameExit();
+
+	}
+
+	void CheckForGameExit()
+	{
+
+		if (Input.GetKey("escape") == true)
+		{
+			Application.Quit();
+		}
+
 	}
 
 	public void AddPointToPlayer(PlayerController.PlayerIndex playerIndex)
