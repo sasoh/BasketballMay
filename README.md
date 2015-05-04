@@ -18,13 +18,13 @@ Roadmap:
 
 PreAlpha (up to 2 weeks from 2nd of May)
 
-- [ ] two players
-- [ ] map (with jumping pads)
-- [ ] ball
-- [ ] carrying ball around
-- [ ] carrying player around
-- [ ] throwing ball
-- [ ] score counting
+- [x] two players
+- [x] map (with jumping pads)
+- [x] ball
+- [x] carrying ball around
+- [x] carrying player around
+- [x] throwing ball
+- [x] score counting
 
 Alpha (until end of May)
 
