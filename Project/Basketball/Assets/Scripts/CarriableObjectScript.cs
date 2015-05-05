@@ -5,8 +5,10 @@ public class CarriableObjectScript : MonoBehaviour
 {
 
 	public Collider triggerCollider;
+	public float throwForceMultiplier = 1.0f;
 	private GameObject carrier;
 	private Vector2 positionOffset;
+
 	public PlayerController.PlayerIndex lastHoldingPlayer { get; private set; }
 
 	// Use this for initialization
@@ -73,7 +75,9 @@ public class CarriableObjectScript : MonoBehaviour
 			multiplier = -1;
 		}
 
-		Vector3 forceVector = new Vector3(multiplier * force, force / 2, 0.0f);
+		float throwForce = force * throwForceMultiplier;
+
+		Vector3 forceVector = new Vector3(multiplier * throwForce, throwForce / 2, 0.0f);
 		rb.AddForce(forceVector, ForceMode.Impulse);
 
 	}
