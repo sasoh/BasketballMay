@@ -149,10 +149,13 @@ public class PlayerController : MonoBehaviour
 	void UpdateLookingRightStatus()
 	{
 
-		isLookingRight = false;
 		if (axisHorizontal > 0.0f)
 		{
 			isLookingRight = true;
+		} 
+		else if (axisHorizontal < 0.0f)
+		{
+			isLookingRight = false;
 		}
 
 	}
