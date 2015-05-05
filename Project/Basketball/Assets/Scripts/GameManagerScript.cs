@@ -15,6 +15,7 @@ public class GameManagerScript : MonoBehaviour
 		scorePlayer1 = 0;
 		scorePlayer2 = 0;
 		scoreText.SetScores(scorePlayer1, scorePlayer2);
+		Cursor.visible = false;
 
 	}
 
