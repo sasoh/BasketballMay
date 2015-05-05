@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 	private GameObject potentialCarryObject = null;
 	private GameObject carriedObject = null;
 	private PlayerButtonScript buttonScript = null;
+	private float timeSinceLastJumpPad;
 
 	void Start()
 	{
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
 		{
 			Debug.LogError("Player button script not initialized correctly.");
 		}
+		timeSinceLastJumpPad = 0.0f;
 
 	}
 
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
 		ProcessInput();
 		UpdateLookingRightStatus();
+		timeSinceLastJumpPad += Time.deltaTime;
 
 	}
 
@@ -228,11 +231,19 @@ public class PlayerController : MonoBehaviour
 		Rigidbody rb = GetComponent<Rigidbody>();
 
 		JumpPadScript jpScript = jumpPad.GetComponent<JumpPadScript>();
-		if (jpScript != null)
+		if (jpScript != null && timeSinceLastJumpPad >= jpScript.jumpPadTimeout)
 		{
+			timeSinceLastJumpPad = 0.0f;
+
 			// prevent users from jumping
 			isGrounded = false;
-		
+
+			// coming down from a jump might produce the same (or larger) force in the opposite direction
+			// we have to kill the y velocity to allow the pad impulse to work as needed
+			Vector3 velocity = rb.velocity;
+			velocity.y = 0.0f;
+			rb.velocity = velocity;
+
 			// add jump impulse
 			ApplyJump(rb, jpScript.jumpPadForce);
 		}
@@ -256,16 +267,16 @@ public class PlayerController : MonoBehaviour
 	void ProcessPickupInput()
 	{
 
+		// picking up & throwing on button down, otherwise possible pickup/throw loop
 		if (carriedObject == null)
 		{
-			if (Input.GetButton(GetInputName("Pickup")) == true)
+			if (Input.GetButtonDown(GetInputName("Pickup")) == true)
 			{
 				PickupPotentialCargo();
 			}
 		}
 		else
 		{
-			// throwing on button down, otherwise picking up & throwing get into a loop
 			if (Input.GetButtonDown(GetInputName("Pickup")) == true)
 			{
 				ThrowCargo();
@@ -282,9 +293,8 @@ public class PlayerController : MonoBehaviour
 			CarriableObjectScript coScript = potentialCarryObject.gameObject.GetComponent<CarriableObjectScript>();
 			coScript.Pickup(this, new Vector2(0.0f, 1.25f));
 			carriedObject = potentialCarryObject;
+			potentialCarryObject = null;
 		}
-
-		potentialCarryObject = null;
 
 	}
 
@@ -295,9 +305,8 @@ public class PlayerController : MonoBehaviour
 		{
 			CarriableObjectScript coScript = carriedObject.GetComponent<CarriableObjectScript>();
 			coScript.Throw(throwPower, isLookingRight);
+			carriedObject = null;
 		}
-
-		carriedObject = null;
 
 	}
 

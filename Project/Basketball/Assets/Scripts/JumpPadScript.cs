@@ -7,15 +7,7 @@ public class JumpPadScript : MonoBehaviour
 	[Tooltip("Amount of impulse force to apply to player objects.")]
 	public float jumpPadForce = 12.0f;
 
-	// Use this for initialization
-	void Start()
-	{
+	[Tooltip("Timeout between consecutive pad jumps from same player. Needed to prevent double triggering when hitting the pad from strange angles.")]
+	public float jumpPadTimeout = 0.1f;
 
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
 }
