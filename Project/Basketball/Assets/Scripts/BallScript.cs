@@ -5,10 +5,13 @@ public class BallScript : MonoBehaviour
 {
 
 	public GameObject ballSpawnPoint;
+	private bool spawnedNewBall = false;
 
 	// Use this for initialization
 	void Start()
 	{
+
+		spawnedNewBall = false;
 
 	}
 
@@ -20,8 +23,12 @@ public class BallScript : MonoBehaviour
 
 	public void SpawnNewBall()
 	{
-		
-		Instantiate(gameObject, ballSpawnPoint.transform.position, transform.rotation);
+
+		if (spawnedNewBall == false)
+		{
+			spawnedNewBall = true;
+			Instantiate(gameObject, ballSpawnPoint.transform.position, transform.rotation);
+		}
 
 	}
 
