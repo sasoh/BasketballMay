@@ -6,7 +6,10 @@ public class CarriableObjectScript : MonoBehaviour
 
 	public Collider triggerCollider;
 	public float throwForceMultiplier = 1.0f;
-	private GameObject carrier;
+	public GameObject carrier {
+		get;
+		private set;
+	}
 	private Vector2 positionOffset;
 
 	public PlayerController.PlayerIndex lastHoldingPlayer { get; private set; }
