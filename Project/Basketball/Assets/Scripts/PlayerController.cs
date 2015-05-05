@@ -12,8 +12,7 @@ public class PlayerController : MonoBehaviour
 		Player2
 	}
 	public PlayerIndex currentPlayer;
-	public float speedHorizontal;
-	public float speedHorizontalMaximum;
+	public float runMultiplier;
 	public float jumpPower;
 	public float throwPower;
 
@@ -65,7 +64,7 @@ public class PlayerController : MonoBehaviour
 	{
 
 		axisHorizontal = CalculateHorizontalMovement();
-		jumpPressed = Input.GetButtonDown(GetInputName("Jump"));
+		jumpPressed = Input.GetButton(GetInputName("Jump"));
 
 		ProcessPickupInput();
 
@@ -118,16 +117,30 @@ public class PlayerController : MonoBehaviour
 	void ApplyHorizontalMovement(Rigidbody rigidBody)
 	{
 
-		float horizontalForce = CalculateHorizontalForce();
+		float horizontalForceAmount = runMultiplier * axisHorizontal;
 
-		// permit movement in opposite direction of wall collision
-		if (isGrounded == true || (wallCollisionDirection == 0 || Mathf.Sign(wallCollisionDirection) == Mathf.Sign(horizontalForce)))
+		bool canMove = CanMove(horizontalForceAmount);
+		if (canMove == true)
 		{
-			Vector3 velocity = rigidBody.velocity;
-			velocity.x = horizontalForce;
-			rigidBody.velocity = velocity;
+			Vector3 localPos = transform.localPosition;
+			localPos.x += horizontalForceAmount;
+			transform.localPosition = localPos;
 		}
 
+	}
+
+	bool CanMove(float withForce)
+	{
+
+		bool result = false;
+
+		// permit movement in opposite direction of wall collision
+		if (isGrounded == true || (wallCollisionDirection == 0 || Mathf.Sign(wallCollisionDirection) == Mathf.Sign(withForce)))
+		{
+			result = true;
+		}
+
+		return result;
 	}
 
 	void UpdateLookingRightStatus()
@@ -150,18 +163,6 @@ public class PlayerController : MonoBehaviour
 		{
 			result = (int)Mathf.Sign(axisHorizontal);
 		}
-
-		return result;
-
-	}
-
-	float CalculateHorizontalForce()
-	{
-
-		float result = 0.0f;
-
-		result = speedHorizontal * axisHorizontal;
-		result = Mathf.Clamp(result, -speedHorizontalMaximum, speedHorizontalMaximum);
 
 		return result;
 
@@ -229,11 +230,9 @@ public class PlayerController : MonoBehaviour
 		JumpPadScript jpScript = jumpPad.GetComponent<JumpPadScript>();
 		if (jpScript != null)
 		{
-			// terminate any Y velocity
-			Vector3 velocity = rb.velocity;
-			velocity.y = 0.0f;
-			rb.velocity = velocity;
-
+			// prevent users from jumping
+			isGrounded = false;
+		
 			// add jump impulse
 			ApplyJump(rb, jpScript.jumpPadForce);
 		}
@@ -307,7 +306,7 @@ public class PlayerController : MonoBehaviour
 
 		// disable jumping from dropped state
 		isGrounded = false;
-	
+
 	}
 
 }
