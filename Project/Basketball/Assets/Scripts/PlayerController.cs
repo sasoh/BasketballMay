@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
 		if (axisHorizontal > 0.0f)
 		{
 			isLookingRight = true;
-		} 
+		}
 		else if (axisHorizontal < 0.0f)
 		{
 			isLookingRight = false;
