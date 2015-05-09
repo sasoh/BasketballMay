@@ -110,6 +110,8 @@ public class PlayerController : MonoBehaviour
 		{
 			if (jumpPressed == true)
 			{
+				ReleaseFromBeingPickedUp();
+						
 				ApplyJump(rigidBody, jumpPower);
 			}
 		}
@@ -323,6 +325,17 @@ public class PlayerController : MonoBehaviour
 			CarriableObjectScript coScript = carriedObject.GetComponent<CarriableObjectScript>();
 			coScript.Throw(throwPower, isLookingRight, gameObject);
 			carriedObject = null;
+		}
+
+	}
+
+	void ReleaseFromBeingPickedUp()
+	{
+
+		CarriableObjectScript coScript = GetComponent<CarriableObjectScript>();
+		if (coScript != null)
+		{
+			coScript.Drop();
 		}
 
 	}
