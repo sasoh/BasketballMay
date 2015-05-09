@@ -6,7 +6,8 @@ public class CarriableObjectScript : MonoBehaviour
 
 	public Collider triggerCollider;
 	public float throwForceMultiplier = 1.0f;
-	public GameObject carrier {
+	public GameObject carrier
+	{
 		get;
 		private set;
 	}
@@ -52,7 +53,7 @@ public class CarriableObjectScript : MonoBehaviour
 	{
 
 		lastHoldingPlayer = PlayerController.PlayerIndex.PlayerNone;
-	
+
 	}
 
 	public void Pickup(PlayerController other, Vector2 carryingPositionOffset)
@@ -65,23 +66,27 @@ public class CarriableObjectScript : MonoBehaviour
 
 	}
 
-	public void Throw(float force, bool rightDirection)
+	public void Throw(float force, bool rightDirection, GameObject thrower)
 	{
 
-		Drop();
-
-		Rigidbody rb = GetComponent<Rigidbody>();
-		
-		int multiplier = 1;
-		if (rightDirection == false)
+		// only if thrown by carrier
+		if (thrower == carrier)
 		{
-			multiplier = -1;
+			Drop();
+
+			Rigidbody rb = GetComponent<Rigidbody>();
+
+			int multiplier = 1;
+			if (rightDirection == false)
+			{
+				multiplier = -1;
+			}
+
+			float throwForce = force * throwForceMultiplier;
+
+			Vector3 forceVector = new Vector3(multiplier * throwForce, throwForce / 2, 0.0f);
+			rb.AddForce(forceVector, ForceMode.Impulse);
 		}
-
-		float throwForce = force * throwForceMultiplier;
-
-		Vector3 forceVector = new Vector3(multiplier * throwForce, throwForce / 2, 0.0f);
-		rb.AddForce(forceVector, ForceMode.Impulse);
 
 	}
 
@@ -90,7 +95,7 @@ public class CarriableObjectScript : MonoBehaviour
 
 		// notify carried object that it was dropped (players getting dropped require more processing)
 		SendMessage("ProcessDropping", null, SendMessageOptions.DontRequireReceiver);
-		
+
 		carrier = null;
 		SetRigidBodyKinematic(false);
 

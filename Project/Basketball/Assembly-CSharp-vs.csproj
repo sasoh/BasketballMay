@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scripts\JumpPadScript.cs" />
      <Compile Include="Assets\Scripts\PlayerButtonScript.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\PlayerTitleScript.cs" />
      <Compile Include="Assets\Scripts\ScoreTextScript.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

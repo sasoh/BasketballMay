@@ -315,7 +315,7 @@ public class PlayerController : MonoBehaviour
 		if (carriedObject != null)
 		{
 			CarriableObjectScript coScript = carriedObject.GetComponent<CarriableObjectScript>();
-			coScript.Throw(throwPower, isLookingRight);
+			coScript.Throw(throwPower, isLookingRight, gameObject);
 			carriedObject = null;
 		}
 
