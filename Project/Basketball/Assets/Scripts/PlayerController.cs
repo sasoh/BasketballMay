@@ -294,10 +294,10 @@ public class PlayerController : MonoBehaviour
 		if (potentialCarryObject != null)
 		{
 			// prevent picking up the player that is carrying us
-			CarriableObjectScript coScriptThis = gameObject.GetComponent<CarriableObjectScript>();
-			if (coScriptThis != null && coScriptThis.carrier != potentialCarryObject.gameObject)
+			CarriableObjectScript coScriptThis = GetComponent<CarriableObjectScript>();
+			if (coScriptThis != null && coScriptThis.carrier != potentialCarryObject)
 			{
-				CarriableObjectScript coScript = potentialCarryObject.gameObject.GetComponent<CarriableObjectScript>();
+				CarriableObjectScript coScript = potentialCarryObject.GetComponent<CarriableObjectScript>();
 				if (coScript != null)
 				{
 					coScript.Pickup(this, new Vector2(0.0f, 1.25f));
