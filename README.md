@@ -1,5 +1,11 @@
 # Basketball
 
+Current stage: **Prealpha**
+
+[Latest build here](http://sourceforge.net/projects/basketballmay/files/builds/004_Rebalance.rar/download)
+
+[@sourceforge](https://sourceforge.net/projects/basketballmay/files/builds/)
+
 Arcade basketball game. Player compete to grab the ball and throw it through an elevated ring. Players can grab other players and throw them around, too.
 
 WIP screenshot:
