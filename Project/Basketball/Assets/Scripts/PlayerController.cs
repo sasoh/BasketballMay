@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 	public float runMultiplier;
 	public float jumpPower;
 	public float throwPower;
+	public float thrownActionDelay = 0.25f; // what time after being thrown the user can start to move
 
 	private int axisHorizontal;
 	private bool isLookingRight;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
 	private GameObject carriedObject = null;
 	private PlayerButtonScript buttonScript = null;
 	private float timeSinceLastJumpPad;
+	private float thrownActionTimeout = 0.0f;
 
 	void Start()
 	{
@@ -66,8 +68,12 @@ public class PlayerController : MonoBehaviour
 	void ProcessInput()
 	{
 
-		axisHorizontal = CalculateHorizontalMovement();
-		jumpPressed = Input.GetButton(GetInputName("Jump"));
+		thrownActionTimeout -= Time.deltaTime;
+		if (thrownActionTimeout <= 0.0f)
+		{
+			axisHorizontal = CalculateHorizontalMovement();
+			jumpPressed = Input.GetButton(GetInputName("Jump"));
+		}
 
 		ProcessPickupInput();
 
@@ -326,6 +332,7 @@ public class PlayerController : MonoBehaviour
 
 		// disable jumping from dropped state
 		isGrounded = false;
+		thrownActionTimeout = thrownActionDelay;
 
 	}
 
